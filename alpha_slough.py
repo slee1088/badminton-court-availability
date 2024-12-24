@@ -215,7 +215,8 @@ date_time_df['Location'] = 'Alpha Slough'
 
 
 df_union_final = date_time_df.merge(df_union_final, on=['DateTime','Court','Location'], how='left')
-df_union_final['Status'] = np.where(df_union_final['Status'].isnull(), 'Available', df_union_final['Status'])
+df_union_final['Status'] = np.where(df_union_final['Status'].isnull(), 'available', df_union_final['Status'])
+df_union_final['Status'] = np.where(df_union_final['Status'] != 'available' , 'unavailable', df_union_final['Status'])
 df_union_final = df_union_final.rename(columns={'Date_x': 'Date', 'Time_x': 'Time'})
 df_union_final = df_union_final[['Location','Court','Date','Time','Status']]
 
