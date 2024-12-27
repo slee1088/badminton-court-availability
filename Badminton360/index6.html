@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Badminton Court Schedule</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="badminton_time_fetch.js"></script> <!-- 'defer' ensures the script runs after the HTML loads -->
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Title</h1>
+      <div class="date-navigation">
+        <button>&lt;</button>
+        <span>December</span>
+        <button>&gt;</button>
+      </div>
+    </header>
+
+    <div class="view-switch">
+      <button class="active">Detailed</button>
+      <button>Simple</button>
+    </div>
+
+    <aside class="filters">
+      <h2>Centre</h2>
+      <div>
+        <input type="checkbox" id="alpha-egerton" checked>
+        <label for="alpha-egerton">Alpha | Egerton</label>
+      </div>
+      <div>
+        <input type="checkbox" id="alpha-sloan" checked>
+        <label for="alpha-sloan">Alpha | Sloan</label>
+      </div>
+      <div>
+        <input type="checkbox" id="roketto">
+        <label for="roketto">Roketto</label>
+      </div>
+
+      <h2>Multi-hour</h2>
+      <div>
+        <input type="checkbox" id="multi-hour-2">
+        <label for="multi-hour-2">2 consecutive hours</label>
+      </div>
+      <div>
+        <input type="checkbox" id="multi-hour-3">
+        <label for="multi-hour-3">3 consecutive hours</label>
+      </div>
+
+      <h2>Multi-court</h2>
+      <div>
+        <input type="checkbox" id="multi-court-2-any">
+        <label for="multi-court-2-any">2 courts same time | any</label>
+      </div>
+      <div>
+        <input type="checkbox" id="multi-court-2-adjacent">
+        <label for="multi-court-2-adjacent">2 courts same time | adjacent</label>
+      </div>
+      <div>
+        <input type="checkbox" id="multi-court-3-any">
+        <label for="multi-court-3-any">3 courts same time | any</label>
+      </div>
+      <div>
+        <input type="checkbox" id="multi-court-3-adjacent">
+        <label for="multi-court-3-adjacent">3 courts same time | adjacent</label>
+      </div>
+    </aside>
+
+    <main class="schedule">
+      <div class="schedule-header">
+        <div class="time-slot">Time</div>
+        <div>Sunday<br>1/12/24</div>
+        <div>Monday<br>1/12/24</div>
+        <div>Tuesday<br>1/12/24</div>
+        <div>Wednesday<br>1/12/24</div>
+      </div>
+      <div class="schedule-body">
+        <div class="time-slot">10am</div>
+        <div class="slot available">Alpha | Egerton: 2, 3, 5, 10<br>Alpha | Sloan: 5, 6, 7</div>
+        <div class="slot available">Alpha | Egerton: 2, 3, 5, 10<br>Alpha | Sloan: 5, 6, 7</div>
+        <div class="slot unavailable">No courts available</div>
+        <div class="slot available">Alpha | Egerton: 2, 3, 5, 10<br>Alpha | Sloan: 5, 6, 7</div>
+        <!-- Repeat rows similarly for other times -->
+      </div>
+        <table id="timesTable"></table>
+    </main>
+  </div>
+</body>
+<script>
+
+timesData = [];
+
+// Async function to wait for data using while loop
+async function waitForData() {
+  while (timesData.length === 0) {  // Check if there's no data
+    console.log('Waiting for data...');
+    await new Promise(resolve => setTimeout(resolve, 100)); // Wait 100ms before checking again
+  }
+  
+  // Once data is available
+  console.log('Data is now available:', timesData);
+  createTable();
+  // Proceed with the next steps after data is available
+}
+
+
+function createTable() {
+
+  const table = document.getElementById('timesTable');
+
+  // Create the table header
+  const headerRow = document.createElement('tr');
+  const headers = ['Location', 'Court', 'Date', 'Time', 'Status'];
+  headers.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow.appendChild(th);
+  });
+  table.appendChild(headerRow);
+
+  console.log(timesData);
+
+  // Create the table rows
+  timesData.forEach(entry => {
+      const row = document.createElement('tr');
+      headers.forEach(header => {
+          const cell = document.createElement('td');
+          cell.textContent = entry[header];
+          row.appendChild(cell);
+      });
+      table.appendChild(row);
+  });
+}
+
+
+waitForData();
+
+
+
+</script>
+
+</html>
