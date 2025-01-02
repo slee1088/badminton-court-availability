@@ -134,21 +134,21 @@ def convert_date_string(date_string):
 playwright = sync_playwright().start()
 browser = playwright.chromium.launch()
 page = browser.new_page()
-page.goto('https://alphabadminton.yepbooking.com.au/')
+page.goto('https://nbc.yepbooking.com.au/')
 
-try:
-    close_button = page.query_selector(".ui-icon-closethick")
-    close_button.click()
-except:
-    print("button already clicked")
+#try:
+#    close_button = page.query_selector(".ui-icon-closethick")
+#    close_button.click()
+#except:
+#    print("button already clicked")
 
-page.get_by_text("Alpha Auburn (22 Courts)").click()
+#page.get_by_text("Alpha Auburn (22 Courts)").click()
 
-try:
-    close_button = page.query_selector(".ui-icon-closethick")
-    close_button.click()
-except:
-    print("button already clicked")
+#try:
+#    close_button = page.query_selector(".ui-icon-closethick")
+#    close_button.click()
+#except:
+#    print("button already clicked")
 page.wait_for_timeout(2000)
 page.select_option("#prehled", value="week")
 page.wait_for_timeout(2000)
@@ -158,7 +158,7 @@ auburn_bookings += page.content()
 #with open('slough_week_0.html', "w+", encoding="utf-8") as f:
 #    f.write(page.content())
 
-for i in range(4):
+for i in range(3):
     page.wait_for_timeout(2000)
     page.locator("#nextDateMover").nth(-1).click()
     page.wait_for_timeout(2000)
@@ -187,13 +187,13 @@ combined_df = pd.concat(dfs, ignore_index=True)
 df_union_max = combined_df.groupby(['Class','key'])['Titles'].max().reset_index()
 df_union_final = combined_df[['Court','Class','key']].drop_duplicates().merge(df_union_max, on=['Class','key'], how='left')
 df_union_final['Class_Number'] = df_union_final['Class'].str.extract(r'_(\d+)').astype(int)
-df_union_final['Location'] = np.where(df_union_final['Class_Number'] < 37, 'Alpha Slough',  np.where(df_union_final['Class_Number'] < 65, 'Alpha Egerton', 'Alpha Auburn'))
+df_union_final['Location'] = 'NBC Silverwater'
 df_union_final = df_union_final[['Location','Court','Titles','key']]
 df_union_final = df_union_final.explode('Titles')
 df_union_final[['Time', 'Status']] = df_union_final['Titles'].str.split(' - ', n=1, expand=True)
 df_union_final.drop(columns='Titles',axis=1,inplace=True)
 df_union_final['Time'] = df_union_final['Time'].str.extract(r'(\d+:\d+[ap]m)')
-df_union_final = df_union_final[df_union_final['Location'] == 'Alpha Auburn']
+#df_union_final = df_union_final[df_union_final['Location'] == 'Alpha Auburn']
 df_union_final = df_union_final[df_union_final['Court'] != ""]
 df_union_final = df_union_final[df_union_final['Court'].notna()]
 df_union_final = df_union_final[df_union_final['Status'].notna()]
@@ -208,16 +208,13 @@ max_date = df_union_final['Date'].max()
 daily_range = pd.date_range(start=min_date, end=max_date, freq='D')
 
 times = [
-    "9:00am", "10:00am", "11:00am", "12:00pm",
+    "7:00am","8:00am","9:00am", "10:00am", "11:00am", "12:00pm",
     "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm",
     "7:00pm", "8:00pm", "9:00pm", "10:00pm"
 ]
 
 courts = [
-    "Court 1", "Court 2", "Court 3", "Court 4", "Court 5", "Court 6",
-    "Court 7", "Court 8", "Court 9", "Court 10", "Court 11", "Court 12",
-    "Court 13", "Court 14", "Court 15", "Court 16", "Court 17", "Court 18",
-    "Court 19", "Court 20", "Court 21", "Court 22"
+    "Court 1", "Court 2", "Court 3", "Court 4", "Court 5", "Court 6"
 ]
 
 date_time_list = []
@@ -236,7 +233,7 @@ for date in daily_range:
             courts_list.append(court)
 
 date_time_df = pd.DataFrame({'Date': date_list, 'Time': time_list, 'DateTime': date_time_list, 'Court':courts_list})
-date_time_df['Location'] = 'Alpha Auburn'
+date_time_df['Location'] = 'NBC Silverwater'
 
 
 df_union_final = date_time_df.merge(df_union_final, on=['DateTime','Court','Location'], how='left')
@@ -250,7 +247,7 @@ df_union_final = df_union_final[['Location','Court','Date','Time','Status']]
 
 
 bucket_name = "badminton-bookings"
-blob_name = "alpha_auburn_bookings.csv" 
+blob_name = "nbc_silverwater_bookings.csv" 
 
 if upload_dataframe_to_gcs(bucket_name, df_union_final, blob_name):
     print("Upload successful")

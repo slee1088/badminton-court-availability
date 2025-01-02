@@ -158,7 +158,7 @@ slough_bookings += page.content()
 #with open('slough_week_0.html', "w+", encoding="utf-8") as f:
 #    f.write(page.content())
 
-for i in range(3):
+for i in range(4):
     page.wait_for_timeout(2000)
     page.locator("#nextDateMover").nth(-1).click()
     page.wait_for_timeout(2000)

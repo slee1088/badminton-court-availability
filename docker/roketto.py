@@ -108,7 +108,7 @@ booking = create_df_from_html(roketto_bookings)
 
 bookings_final = pd.concat([bookings_final, booking], ignore_index=True)
 
-for i in range(30):
+for i in range(35):
     page.wait_for_timeout(2000)
     page.get_by_text("Next ").nth(0).click()
     page.wait_for_timeout(2000)
