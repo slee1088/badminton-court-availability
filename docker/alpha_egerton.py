@@ -159,7 +159,7 @@ egerton_bookings += page.content()
 #with open('egerton_week_0.html', "w+", encoding="utf-8") as f:
 #    f.write(page.content())
 
-for i in range(3):
+for i in range(4):
     page.wait_for_timeout(2000)
     page.locator("#nextDateMover").nth(-1).click()
     page.wait_for_timeout(2000)
@@ -222,7 +222,7 @@ courts = [
     "Court 7", "Court 8", "Court 9", "Court 10", "Court 11", "Court 12",
     "Court 13", "Court 14", "Court 15", "Court 16", "Court 17", "Court 18",
     "Court 19", "Court 20", "Court 21", "Court 22", "Court 23", "Court 24",
-    "Court 25", "Court 26", "Court 27", "Court 28"
+    "Court 25", "Court 26", "VIP1", "VIP2"
 ]
 
 date_time_list = []

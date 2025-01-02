@@ -43,4 +43,4 @@ RUN playwright install chromium
 
 COPY . .
 
-CMD ["/bin/bash", "-c", "python3 alpha_slough.py && python3 alpha_egerton.py && python3 alpha_auburn.py && python3 roketto.py"]
+CMD ["/bin/bash", "-c", "python3 alpha_slough.py && python3 alpha_egerton.py && python3 alpha_auburn.py && python3 roketto.py && python3 nbc.py && python3 kbc.py && python3 combine_all.py"]
